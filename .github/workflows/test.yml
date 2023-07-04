@@ -1,0 +1,37 @@
+name: go test
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+jobs:
+  statictest:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: ["windows-latest"]
+        go: ["1.20.x"]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 1
+      - uses: WillAbides/setup-go-faster@v1.7.0
+        with:
+          go-version: ${{ matrix.go }}
+      - name: Compile binary
+        run: |
+          go mod verify
+          go build -v ./cmd/staticlint
+          go run -buildvcs=false ./cmd/staticlint/gen_config.go >> config.json
+
+      - name: Run statictest
+        run: |
+          go vet -unsafeptr=false -vettool=staticlint ./internal/... ./cmd/...
+
+      - name: Run tests
+        run: |
+          go test ./... -race -cover -coverpkg=./internal/...
