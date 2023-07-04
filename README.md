@@ -1,4 +1,4 @@
-[![godoc](https://godoc.org/github.com/KusoKaihatsuSha/tray_helper?status.svg)](https://godoc.org/github.com/KusoKaihatsuSha/tray_helper) [![Go Report Card](https://goreportcard.com/badge/github.com/KusoKaihatsuSha/tray_helper)](https://goreportcard.com/report/github.com/KusoKaihatsuSha/tray_helper)
+[![godoc](https://godoc.org/github.com/KusoKaihatsuSha/tray_helper?status.svg)](https://godoc.org/github.com/KusoKaihatsuSha/tray_helper) [![Go Report Card](https://goreportcard.com/badge/github.com/KusoKaihatsuSha/tray_helper)](https://goreportcard.com/report/github.com/KusoKaihatsuSha/tray_helper) [![go test](https://github.com/KusoKaihatsuSha/tray_helper/actions/workflows/test.yml/badge.svg)](https://github.com/KusoKaihatsuSha/tray_helper/actions/workflows/test.yml)
 
 # Tray helper
 App to help with daily routine.
