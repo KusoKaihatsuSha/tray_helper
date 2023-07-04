@@ -46,7 +46,7 @@ OR
 Screenshots of settings:
 
 <div style="width:50%">
-<img src="/pictures/settings-0.png" ><br>
-<img src="/pictures/settings-list.png" ><br>
-<img src="/pictures/settings.png" ><br>
+<img src="/files/settings-0.png" ><br>
+<img src="/files/settings-list.png" ><br>
+<img src="/files/settings.png" ><br>
 </div>
