@@ -1,0 +1,1317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Easy tray helper settings</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css" />
+  <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+  <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
+  <style>
+@import url("https://fonts.googleapis.com/css?family=Damion|Muli:400,600");
+
+#template {
+  z-index: 999999;
+  position: absolute;
+  cursor: move;
+  left: -100%;
+  top: 25px;
+  opacity: .95;
+  width: max-content;
+  height: max-content;
+}
+.slow {
+  transition: all 1s ease;
+}
+* {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+.buttons {
+  text-align: center;
+}
+.btn-hover {
+  width: 150px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #fff;
+  cursor: pointer;
+  margin: 5px;
+  height: 35px;
+  text-align:center;
+  border: none;
+  background-size: 300% 100%;
+  border-radius: 20px;
+  moz-transition: all .4s ease-in-out;
+  -o-transition: all .4s ease-in-out;
+  -webkit-transition: all .4s ease-in-out;
+  transition: all .4s ease-in-out;
+}
+.btn-hover:hover {
+  background-position: 100% 0;
+  moz-transition: all .4s ease-in-out;
+  -o-transition: all .4s ease-in-out;
+  -webkit-transition: all .4s ease-in-out;
+  transition: all .4s ease-in-out;
+}
+.btn-hover:focus {
+  outline: none;
+}
+.btn-hover.color-1 {
+  background-image: linear-gradient(to right, #25aae1, #40e495, #30dd8a, #2bb673);
+  box-shadow: 0 4px 15px 0 rgba(49, 196, 190, 0.75);
+}
+.btn-hover.color-2 {
+  background-image: linear-gradient(to right, #f5ce62, #e43603, #fa7199, #e85a19);
+  box-shadow: 0 4px 15px 0 rgba(229, 66, 10, 0.75);
+}
+.btn-hover.color-3 {
+  background-image: linear-gradient(to right, #667eea, #764ba2, #6B8DD6, #8E37D7);
+  box-shadow: 0 4px 15px 0 rgba(116, 79, 168, 0.75);
+}
+.btn-hover.color-4 {
+  background-image: linear-gradient(to right, #fc6076, #ff9a44, #ef9d43, #e75516);
+  box-shadow: 0 4px 15px 0 rgba(252, 104, 110, 0.75);
+}
+.btn-hover.color-5 {
+  background-image: linear-gradient(to right, #0ba360, #3cba92, #30dd8a, #2bb673);
+  box-shadow: 0 4px 15px 0 rgba(23, 168, 108, 0.75);
+}
+.btn-hover.color-6 {
+  background-image: linear-gradient(to right, #009245, #FCEE21, #00A8C5, #D9E021);
+  box-shadow: 0 4px 15px 0 rgba(83, 176, 57, 0.75);
+}
+.btn-hover.color-7 {
+  background-image: linear-gradient(to right, #6253e1, #852D91, #A3A1FF, #F24645);
+  box-shadow: 0 4px 15px 0 rgba(126, 52, 161, 0.75);
+}
+.btn-hover.color-8 {
+  background-image: linear-gradient(to right, #29323c, #485563, #2b5876, #4e4376);
+  box-shadow: 0 4px 15px 0 rgba(45, 54, 65, 0.75);
+}
+.btn-hover.color-9 {
+  background-image: linear-gradient(to right, #25aae1, #4481eb, #04befe, #3f86ed);
+  box-shadow: 0 4px 15px 0 rgba(65, 132, 234, 0.75);
+}
+.btn-hover.color-10 {
+  background-image: linear-gradient(to right, #ed6ea0, #ec8c69, #f7186a , #FBB03B);
+  box-shadow: 0 4px 15px 0 rgba(236, 116, 149, 0.75);
+}
+.btn-hover.color-11 {
+  background-image: linear-gradient(to right, #eb3941, #f15e64, #e14e53, #e2373f);
+  box-shadow: 0 5px 15px rgba(242, 97, 103, .4);
+}
+cs-app, cs-app * {
+  box-sizing: border-box;
+  border: none;
+  background: transparent;
+  padding: 0;
+  margin: 0;
+  display: block;
+}
+cs-app {
+  margin: auto;
+  width: 100%;
+}
+cs-app cs-title {
+  text-align: center;
+  margin-bottom: 10px;
+  font-size: 21px;
+  display:inline-block;
+}
+cs-app cs-tiles {
+  height: 344px;
+  position: relative;
+}
+cs-app cs-tiles input {
+  display: none;
+}
+cs-app cs-tiles cs-tile-container {
+  display: flex;
+  position: absolute;
+  height: 85px;
+  transform: translateX(-50%);
+  transition: all 0.15s 0.15s;
+  z-index: 1000;
+}
+cs-app cs-tiles cs-tile-container cs-tile {
+/*  background: #8670dc;*/
+  background-image: linear-gradient(to right, #fc6076, #ff9a44, #ef9d43, #e75516);
+  
+  background-size: 250% 100%;
+  moz-transition: all .4s ease-in-out;
+  -o-transition: all .4s ease-in-out;
+  -webkit-transition: all .4s ease-in-out;
+  transition: all .4s ease-in-out;
+/*  box-shadow: 0 4px 15px 0 rgba(126, 52, 161, 0.75);*/
+  margin: auto;
+  width: 90%;
+  height: 80%;
+  border-radius: 20px;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+  position: relative;
+/*  transition: all 0.15s 0.15s, background 0.15s;*/
+}
+cs-app cs-tiles cs-tile-container cs-tile:hover {
+/*  box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.75);
+  background: #668cff;*/
+  box-shadow: 0 4px 15px 0 rgba(252, 104, 110, 0.75);
+  background-position: 100% 0;
+  moz-transition: all .4s ease-in-out;
+  -o-transition: all .4s ease-in-out;
+  -webkit-transition: all .4s ease-in-out;
+  transition: all .4s ease-in-out;
+}
+
+cs-app cs-tiles cs-tile-container cs-tile:focus {
+  outline: none;
+}
+
+cs-app cs-tiles cs-tile-container cs-tile cs-text {
+  transition: all 0.15s 0.15s;
+  width: 100%;
+  text-align: center;
+  line-height: 70px;
+  white-space: nowrap;
+  text-transform: uppercase;
+}
+cs-app cs-tiles cs-tile-container cs-tile cs-content {
+  transition: all 0.15s, max-height 0s;
+  opacity: 0;
+  pointer-events: none;
+  max-height: 0;
+}
+cs-app cs-tiles cs-tile-container cs-tile .cs-delete {
+  cursor: pointer;
+  position: absolute;
+  opacity: 0;
+  top: 10px;
+  right: var(100%+10px);
+  font-size: 15px;
+}
+cs-app cs-tiles cs-tile-container cs-tile .cs-delete:before {
+  content: "❌";
+}
+cs-app cs-tiles cs-tile-container cs-tile .cs-close:before {
+  content: "✖️";
+}
+cs-app cs-tiles cs-tile-container cs-tile .cs-delete:hover:before {
+  content: "❌ DELETE";
+}
+cs-app cs-tiles cs-tile-container cs-tile .cs-close:hover:before {
+  content: "CLOSE ✖️";
+}
+cs-app cs-tiles cs-tile-container cs-tile .cs-open {
+  cursor: pointer;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+}
+cs-app cs-tiles cs-tile-container cs-tile .cs-close {
+  cursor: pointer;
+  transition: all 0.15s;
+  position: absolute;
+  opacity: 0;
+  top: 10px;
+  right: 25px;
+  font-size: 15px;
+}
+cs-app cs-tiles input:checked + cs-tile-container {
+  transition: all 0.25s;
+  width: 100%;
+  height: 100%;
+  left: 50%;
+  top: 50%;
+  transform: translateX(-50%) translateY(-50%);
+  z-index: 10000;
+}
+cs-app cs-tiles input:checked + cs-tile-container cs-tile {
+  transition: all 0.25s;
+  background-image: linear-gradient(to right, #fc6076, #ff9a44, #ef9d43, #e75516);
+/*  background: #3b3;*/
+  min-inline-size: 250px;
+  height: max-content;
+  width: 200%;
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.5);
+}
+cs-app cs-tiles input:checked + cs-tile-container cs-tile:hover {
+  cursor: initial;
+}
+cs-app cs-tiles input:checked + cs-tile-container cs-tile .cs-open {
+  display: none;
+}
+cs-app cs-tiles input:checked + cs-tile-container cs-tile .cs-close {
+  transition: all 0.15s 0.25s;
+  opacity: 1;
+}
+cs-app cs-tiles input:checked + cs-tile-container cs-tile .cs-close:hover {
+  transition: all 0.15s;
+  opacity: 0.5;
+}
+cs-app cs-tiles input:checked + cs-tile-container cs-tile .cs-delete {
+  transition: all 0.15s 0.25s;
+  opacity: 1;
+}
+cs-app cs-tiles input:checked + cs-tile-container cs-tile .cs-delete:hover {
+  transition: all 0.15s;
+  opacity: 0.5;
+}
+cs-app cs-tiles input:checked + cs-tile-container cs-tile cs-text {
+  transition: all 0.15s 0.25s;
+  font-size: 24px;
+  line-height: 50px;
+}
+cs-app cs-tiles input:checked + cs-tile-container cs-tile cs-content {
+  flex: 1;
+  transition: all 0.25s 0.4s, max-height 0s 0.4s, flex 0s 0.4s;
+  opacity: 1;
+  margin-top: 10px;
+  pointer-events: initial;
+  width: 100%;
+  max-height: 1000000px;
+  opacity: 0.9;
+}
+div {
+  vertical-align: middle;
+}
+div li {
+  vertical-align: middle;
+}
+
+ul {
+  vertical-align: middle;
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+body {
+  font-family: "Muli", sans-serif;
+}
+label {
+  vertical-align: middle;
+  height: max-content;
+  width: max-content;
+}
+.hide {
+  transition: hidden 0.5s ease-out;
+  visibility: hidden;
+}
+.box-container {
+  height: 100%;
+}
+.added {
+  counter-reset: section;
+}
+.panel-body .mm_button::before {
+    counter-increment: section;
+    content: counter(section);
+}
+.box-item {
+  vertical-align: middle;
+  width: fit-content;
+  z-index: 1;
+}
+#rawtext {
+  text-align: center;
+  vertical-align: middle;
+  cursor: pointer;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  color: #333;
+  background-color: #fff;
+  border-color: #ccc;
+  transition: all 0.3s ease-out;
+  max-width: 150px;
+  inline-size: 150px;
+  word-break: break-all;
+  clear: both;
+  display: block;
+}
+#rawtext:focus {
+  height: 15em;
+  width: 30em;
+  display: block;
+  position: relative;
+  max-width: 320px;
+  inline-size: 320px;
+  padding: 0px 0px;
+  text-align: justify;
+  transition: all 0.3s ease-out;
+}
+.box-in-item {
+  padding: 0px 0px;
+  height: max-content;
+  width: max-content;
+  inline-size: max-content;
+  word-break: break-all;
+  clear: both;
+}
+.mm_button{
+  position: relative;
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  -webkit-tap-highlight-color: transparent;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  flex-direction:column;
+  cursor:pointer;
+  background-color:#eeeeee;
+  width:20px;
+  height:20px;
+  border-radius:4px;
+  box-shadow: -7px -7px 20px 0px #fff9,
+              -4px -4px 5px 0px #fff9,
+              7px 7px 20px 0px #0002,
+              4px 4px 5px 0px #0001,
+              inset 0px 0px 0px 0px #fff9,
+              inset 0px 0px 0px 0px #0001,
+              inset 0px 0px 0px 0px #fff9,
+              inset 0px 0px 0px 0px #0001;
+  transition:box-shadow 0.6s cubic-bezier(.79,.21,.06,.81);
+}
+.mm_button_active {
+box-shadow: 0px 0px 0px 0px #fff9,
+            0px 0px 0px 0px #fff9,
+            0px 0px 0px 0px #0001,
+            0px 0px 0px 0px #0001,
+            inset -7px -7px 20px 0px #fff9,
+            inset -4px -4px 5px 0px #fff9,
+            inset 7px 7px 20px 0px #0003,
+            inset 4px 4px 5px 0px #0001;
+}
+.m_button{
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  -webkit-tap-highlight-color: transparent;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  flex-direction:column;
+  cursor:pointer;
+  background-color:#eeeeee;
+  width:20px;
+  height:20px;
+  border-radius:4px;
+  box-shadow: -7px -7px 20px 0px #fff9,
+              -4px -4px 5px 0px #fff9,
+              7px 7px 20px 0px #0002,
+              4px 4px 5px 0px #0001,
+              inset 0px 0px 0px 0px #fff9,
+              inset 0px 0px 0px 0px #0001,
+              inset 0px 0px 0px 0px #fff9,
+              inset 0px 0px 0px 0px #0001;
+  transition:box-shadow 0.6s cubic-bezier(.79,.21,.06,.81);
+}
+.m_button span{
+  background-color:lightcoral;
+  box-shadow: 0px 0px 10px 0px rgba(240,128,128,0.3);
+  width:20px;
+  height:4px;
+  border-radius:4px;
+  margin:3px 0px 3px 0px;
+  transition:margin 0.4s cubic-bezier(.79,.21,.06,.81),transform 0.4s cubic-bezier(.79,.21,.06,.81);
+}
+.m_button span:nth-child(2){
+  transform-origin:50% 50%;
+}
+.m_button_active {
+  box-shadow: 0px 0px 0px 0px #fff9,
+              0px 0px 0px 0px #fff9,
+              0px 0px 0px 0px #0001,
+              0px 0px 0px 0px #0001,
+              inset -7px -7px 20px 0px #fff9,
+              inset -4px -4px 5px 0px #fff9,
+              inset 7px 7px 20px 0px #0003,
+              inset 4px 4px 5px 0px #0001;
+            }
+.m_button_active span{
+  margin:-2px;
+}
+.m_button_active span:nth-child(1){
+  transform:rotate(-45deg);
+  
+}
+.m_button_active span:nth-child(2){
+  transform:scale(0)
+}
+.m_button_active span:nth-child(3){
+  transform:rotate(45deg)
+}
+.enableBlur {
+  z-index: -1;
+  filter: blur(10px);
+}
+.disableBlur {
+  filter: blur(0);
+}
+label {
+  /* display:flex; */
+  line-height: 1.1;
+}
+
+h1 {
+  line-height: 1.0;
+} 
+
+#app_title {
+  line-height: 1.0;
+  background-color:rgb(247, 247, 170);
+  min-width:50px;
+  margin-left: 15px;
+  font-size: 14px;
+  vertical-align: bottom;
+  text-align: center;
+}
+
+#app_exec_window {
+  line-height: 1.0;
+  background-color:rgb(247, 247, 170);
+  min-width:50px;
+  margin-left: 15px;
+  font-size: 14px;
+  vertical-align: bottom;
+  text-align: center;
+}
+
+#app_exec {
+  line-height: 1.0;
+  background-color:rgb(247, 247, 170);
+  min-width:50px;
+  margin-left: 15px;
+  font-size: 14px;
+  vertical-align: bottom;
+  text-align: center;
+}
+
+#app_exec_args {
+  line-height: 1.0;
+  background-color:rgb(247, 247, 170);
+  min-width:50px;
+  margin-left: 15px;
+  font-size: 14px;
+  vertical-align: bottom;
+  text-align: center;
+}
+
+#app_repeat {
+  line-height: 1.0;
+  background-color:rgb(247, 247, 170);
+  min-width:50px;
+  margin-left: 15px;
+  font-size: 14px;
+  vertical-align: bottom;
+  text-align: center;
+}
+
+#app_autoclose {
+  line-height: 1.0;
+  background-color:rgb(247, 247, 170);
+  min-width:50px;
+  margin-left: 15px;
+  font-size: 14px;
+  vertical-align: bottom;
+  text-align: center;
+}
+
+#app_silent {
+  line-height: 1.0;
+  background-color:rgb(247, 247, 170);
+  min-width:50px;
+  font-size: 12px;
+}
+
+</style>
+<script>
+// drag select fix
+(function(original) {
+  jQuery.fn.clone = function() {
+    var result = original.apply(this, arguments),
+      my_textareas = this.find("textarea").add(this.filter("textarea")),
+      result_textareas = result.find("textarea").add(result.filter("textarea")),
+      my_selects = this.find("select").add(this.filter("select")),
+      result_selects = result.find("select").add(result.filter("select"));
+    result.uniqueId();
+    for (var i = 0, l = my_textareas.length; i < l; ++i)
+      $(result_textareas[i]).val($(my_textareas[i]).val());
+    for (var ii = 0, ll = my_selects.length; ii < ll; ++ii)
+      result_selects[ii].selectedIndex = my_selects[ii].selectedIndex;
+    return result;
+  };
+})(jQuery.fn.clone);
+
+// edit title
+function titleEdit(selected) {
+  $( selected ).parent().parent().parent().parent().find('cs-text')[0].innerText = $( selected ).val();
+  if($( selected )[0].value==""){
+    $( selected ).parent().parent().parent().parent().find('cs-text')[0].innerText = $( selected ).attr('placeholder')
+  }
+}
+
+//
+function add(selected) {
+  var id = 100 + Math.floor(Math.random() * 999999999);
+  var forId = "element-"+id;
+  var containerId = "container-"+forId;
+  var sortableId = "sortable-"+forId;
+  var l = $("cs-tiles cs-tile-container").length;
+  $(`<style for="`+forId+`">cs-app cs-tile-container:nth-of-type(`+Number(l+1)+`) { left: calc(`+l%3+` * 33.334% + 1 * 16.667%); top: calc(`+Math.floor(l/3)+` * 85px); width: 33.334%;}</style>`).appendTo('head');
+  $(`<input type="checkbox" id="`+forId+`"/>
+  <cs-tile-container >
+    <cs-tile>
+      <label class="cs-delete" onclick="remove(this);show(this);" for="`+forId+`"></label>
+      <label class="cs-open" onclick="show(this);" for="`+forId+`"></label>
+      <label class="cs-close" onclick="show(this);" for="`+forId+`"></label>
+      <cs-text>`+forId+`</cs-text>
+      <cs-content>
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            Title              :
+            <input title="Name in list" oninput="titleEdit(this);" name="app_title" id="app_title" class="panel-title panel-title-complete btn btn-default box-in-item" type="text" placeholder="`+forId+`" style="max-width: 150px;"><br>
+            Repeat Actions     :
+            <input title="Enter the number of times the action list should be repeated. The minimum is '1'. Examples: 10, 15" name="app_repeat" id="app_repeat" class="panel-title panel-title-complete-repeat btn btn-default box-in-item" type="number" placeholder="second" min="1" max="999999" style="max-width: 150px;" value="1"><br>
+            Autoclose          :
+            <input title="Timer that closes the application started by the command. Examples are 1h10s, 5m, 100ms or empty field" name="app_autoclose" id="app_autoclose" class="panel-title panel-title-complete-autoclose btn btn-default box-in-item" type="text" placeholder="1m30s" style="max-width: 150px;"><br>
+            Silent notification:
+              <select title="If 'YES', no notification will be sent." class="panel-title panel-title-complete-silent btn btn-default box-in-item" name="app_silent" id="app_silent"><option value="true">YES</option><option value="false">NO</option></select>
+          </div>
+          <div id="`+containerId+`" class="panel-body box-container added">
+            <ul id="`+sortableId+`">
+              <p id='delete' style="width: 40px; height: 40px;"></p>
+            </ul>
+          </div>
+        </div>
+      </cs-content>
+    </cs-tile>
+  </cs-tile-container>`).appendTo('cs-tiles');
+
+  $("#"+sortableId).sortable({
+    revert: true
+  });
+
+  return containerId;
+}
+
+function remove(selected) {
+  setTimeout(() => {
+  // unchecked
+  $($(selected).attr('for')).prop('checked', false);
+  // remove all linked with element
+  $(selected).parent().parent().remove();
+  $("#"+$(selected).attr('for')).remove()
+  $('[for='+$(selected).attr('for')+']').remove()
+  var ii=0;
+  // recalc position
+  $("cs-tiles cs-tile-container")
+      .each(function() {
+        var th = $(this).find('label[for]').attr('for');
+        $('[for='+th+']')[0].remove();
+        $(`<style for="`+th+`">cs-app cs-tile-container:nth-of-type(`+(ii+1)+`) { left: calc(`+ii%3+` * 33.334% + 1 * 16.667%); top: calc(`+Math.floor(ii/3)+` * 85px); width: 33.334%;}</style>`).appendTo('head');
+        ii++; 
+      });
+
+  }, 700);
+}
+
+
+function show(selected) {
+setTimeout(() => { 
+  if($(selected).parent().parent().parent().parent().find('input[type=checkbox]').is(':checked')) {
+    setTimeout(() => { 
+      $("#template").css('left', '25px');
+      $("#template").css('top', '25px');
+      
+      $("cs-tiles cs-tile-container").not($(selected).parent().parent()).each(function() {
+        $(this).toggleClass('enableBlur');
+      });
+    }, 100)
+
+    setTimeout(() => { 
+      $(".buttons").toggleClass('enableBlur');
+      $("#template").removeClass('slow');
+    }, 200)
+  } else {
+    setTimeout(() => { 
+      $("#template").addClass('slow');
+      $("#template").css('left', '-100%');
+      $("#template").css('top', '25px');
+      
+      $("cs-tiles cs-tile-container").not($(selected).parent().parent()).each(function() {
+        $(this).toggleClass('enableBlur');
+      });
+      $(".buttons").toggleClass('enableBlur');
+    }, 100)
+  }
+}, 10)
+
+}
+
+function deleteCommand(selected) {
+  console.log($(selected).parent().parent().parent().parent());
+  if ($(selected).parent().parent().parent().parent().children().length<=2 ) {
+    $(selected).parent().parent().parent().parent().find('#delete').toggleClass('hide');
+  }
+  $(selected).parent().parent().parent().remove();
+}
+
+function showDeleteCommandButton(selected) {
+  if ($(selected).parent().parent().parent().parent().attr('id')!='container1') {
+    $(selected).toggleClass("mm_button_active");
+    $(selected).parent().find('.m_button').toggleClass("m_button_active");
+    $(selected).parent().find('.m_button').toggleClass('hide');
+  }
+}
+
+function selection(selected) {
+  switch ($(selected).val()) {
+    case "URL@":
+      $(selected).parent().find("#rawtext").removeClass("hide");
+      $(selected).parent().find("#press_key").addClass("hide");
+      $(selected).parent().find("#sleep_counter").addClass("hide");
+      $(selected).parent().find("#time_key").addClass("hide");
+      break;
+    case "CLIP@":
+      $(selected).parent().find("#rawtext").removeClass("hide");
+      $(selected).parent().find("#press_key").addClass("hide");
+      $(selected).parent().find("#sleep_counter").addClass("hide");
+      $(selected).parent().find("#time_key").addClass("hide");
+      break;
+    case "GEN@":
+      $(selected).parent().find("#rawtext").addClass("hide");
+      $(selected).parent().find("#press_key").addClass("hide");
+      $(selected).parent().find("#sleep_counter").removeClass("hide");
+      $(selected).parent().find("#time_key").addClass("hide");
+      break;
+    case "EXEC@":
+      $(selected).parent().find("#rawtext").removeClass("hide");
+      $(selected).parent().find("#press_key").addClass("hide");
+      $(selected).parent().find("#sleep_counter").addClass("hide");
+      $(selected).parent().find("#time_key").addClass("hide");
+      break;
+    case "EXECSTD@":
+      $(selected).parent().find("#rawtext").removeClass("hide");
+      $(selected).parent().find("#press_key").addClass("hide");
+      $(selected).parent().find("#sleep_counter").addClass("hide");
+      $(selected).parent().find("#time_key").addClass("hide");
+      break;
+    case "TARGET@":
+      $(selected).parent().find("#rawtext").removeClass("hide");
+      $(selected).parent().find("#press_key").addClass("hide");
+      $(selected).parent().find("#sleep_counter").addClass("hide");
+      $(selected).parent().find("#time_key").addClass("hide");
+      break;
+    case "CLICKTARGET@":
+      $(selected).parent().find("#rawtext").removeClass("hide");
+      $(selected).parent().find("#press_key").addClass("hide");
+      $(selected).parent().find("#sleep_counter").addClass("hide");
+      $(selected).parent().find("#time_key").addClass("hide");
+      break;
+    case "PRINT@":
+      $(selected).parent().find("#rawtext").removeClass("hide");
+      $(selected).parent().find("#press_key").addClass("hide");
+      $(selected).parent().find("#sleep_counter").addClass("hide");
+      $(selected).parent().find("#time_key").addClass("hide");
+      break;
+    case "SLEEP@":
+      $(selected).parent().find("#rawtext").addClass("hide");
+      $(selected).parent().find("#press_key").addClass("hide");
+      $(selected).parent().find("#sleep_counter").removeClass("hide");
+      $(selected).parent().find("#time_key").removeClass("hide");
+      break;
+    case "PRESS@CTRL":
+      $(selected).parent().find("#rawtext").addClass("hide");
+      $(selected).parent().find("#press_key").removeClass("hide");
+      $(selected).parent().find("#sleep_counter").addClass("hide");
+      $(selected).parent().find("#time_key").addClass("hide");
+      break;
+    case "PRESS@SUPER":
+      $(selected).parent().find("#rawtext").addClass("hide");
+      $(selected).parent().find("#press_key").removeClass("hide");
+      $(selected).parent().find("#sleep_counter").addClass("hide");
+      $(selected).parent().find("#time_key").addClass("hide");
+      break;
+    case "PRESS@SHIFT":
+      $(selected).parent().find("#rawtext").addClass("hide");
+      $(selected).parent().find("#press_key").removeClass("hide");
+      $(selected).parent().find("#sleep_counter").addClass("hide");
+      $(selected).parent().find("#time_key").addClass("hide");
+      break;
+    case "PRESS@ALT":
+      $(selected).parent().find("#rawtext").addClass("hide");
+      $(selected).parent().find("#press_key").removeClass("hide");
+      $(selected).parent().find("#sleep_counter").addClass("hide");
+      $(selected).parent().find("#time_key").addClass("hide");
+      break;
+    case "PRESS@CTRL+SHIFT":
+      $(selected).parent().find("#rawtext").addClass("hide");
+      $(selected).parent().find("#press_key").removeClass("hide");
+      $(selected).parent().find("#sleep_counter").addClass("hide");
+      $(selected).parent().find("#time_key").addClass("hide");
+      break;
+    case "PRESS@ALT+SHIFT":
+      $(selected).parent().find("#rawtext").addClass("hide");
+      $(selected).parent().find("#press_key").removeClass("hide");
+      $(selected).parent().find("#sleep_counter").addClass("hide");
+      $(selected).parent().find("#time_key").addClass("hide");
+      break;
+    case "PRESS@CTRL+ALT":
+      $(selected).parent().find("#rawtext").addClass("hide");
+      $(selected).parent().find("#press_key").removeClass("hide");
+      $(selected).parent().find("#sleep_counter").addClass("hide");
+      $(selected).parent().find("#time_key").addClass("hide");
+      break;
+    case "PRESS@CTRL+ALT+SHIFT":
+      $(selected).parent().find("#rawtext").addClass("hide");
+      $(selected).parent().find("#press_key").removeClass("hide");
+      $(selected).parent().find("#sleep_counter").addClass("hide");
+      $(selected).parent().find("#time_key").addClass("hide");
+      break;
+    case "FILE_READ_TO_CLIPBOARD@":
+      $(selected).parent().find("#rawtext").removeClass("hide");
+      $(selected).parent().find("#press_key").addClass("hide");
+      $(selected).parent().find("#sleep_counter").addClass("hide");
+      $(selected).parent().find("#time_key").addClass("hide");
+      break;
+    case "FILE_READ_LAST_LINE_TO_CLIPBOARD@":
+      $(selected).parent().find("#rawtext").removeClass("hide");
+      $(selected).parent().find("#press_key").addClass("hide");
+      $(selected).parent().find("#sleep_counter").addClass("hide");
+      $(selected).parent().find("#time_key").addClass("hide");
+      break;
+    default:
+      $(selected).parent().find("#rawtext").addClass("hide");
+      $(selected).parent().find("#press_key").addClass("hide");
+      $(selected).parent().find("#sleep_counter").addClass("hide");
+      $(selected).parent().find("#time_key").addClass("hide");
+  }
+}
+
+//
+function save(selected) {
+  var obj = {};
+  $(".added div.btn").each(function() {
+
+  var field = $(this).parent().parent().parent().find(".panel-title-complete").val();
+  if (field=="") {
+    field = $(this).parent().parent().parent().find(".panel-title-complete").attr("placeholder");
+  }
+  var appRepeat = $(this).parent().parent().parent().find(".panel-title-complete-repeat").val();
+  var appAutoclose = $(this).parent().parent().parent().find(".panel-title-complete-autoclose").val();
+  var appSilent = $(this).parent().parent().parent().find(".panel-title-complete-silent").val();
+
+  if (obj[field]==null) {
+    obj[field] = {};
+  }
+
+  if (obj[field].actions==null) {
+    obj[field].actions="";
+  }
+
+  obj[field].repeat = parseInt(appRepeat);
+  obj[field].timer = appAutoclose;
+  
+  if (appSilent=="true") {
+    obj[field].silent = true;
+  } else {
+    obj[field].silent = false;
+  }
+
+  $(this).find("select,textarea,input").each(function() {
+    if (!$(this).hasClass("hide") && $(this).is("select")) {
+      obj[field].actions += $(this).val();
+    }
+    if (!$(this).hasClass("hide") && $(this).is("textarea")) {
+      obj[field].actions += $(this).val();
+    }
+    if (!$(this).hasClass("hide") && $(this).is("input")) {
+      obj[field].actions += $(this).val().replace('\\', '\\\\');
+    }
+  });
+  obj[field].actions = obj[field].actions+"|";
+  });
+
+  Object.keys(obj).forEach(key => {
+  obj[key].actions = obj[key].actions.substring(0, obj[key].actions.length - 1);
+  if (isNaN(obj[key].repeat)) {
+    obj[key].repeat=0;
+  }
+  });
+  var myString = JSON.stringify(obj, null, "\t");
+  console.log(myString);
+  localStorage.setItem("settings",myString);
+  $.post("save", myString, function(result){
+
+  });
+
+
+}
+
+//
+function load(selected) {
+  //const json = localStorage.getItem('settings');
+
+  $("cs-tiles cs-tile-container")
+      .each(function() {
+        remove($(this).find('.cs-delete')[0]);
+      });
+
+  $.post("load", function(result){
+    console.log(result); 
+    var obj = JSON.parse(result);
+
+    Object.keys(obj).forEach(key => {
+    var cont = add(null);
+
+    var ln=$("#"+cont).find('#delete');
+      
+    if (ln.length>0) {
+      if (!ln.hasClass('hide')) {
+        ln.toggleClass('hide');
+      }
+    }
+
+    var l = $("#"+cont).find('.ui-sortable');
+    $(l).parent().parent().find(".panel-title-complete").val(key);
+    $(l).parent().parent().parent().parent().find('cs-text').text(key);
+
+    Object.keys(obj[key]).forEach(keyEl => {
+      switch (keyEl) {
+        case "repeat":
+          // $(l).parent().parent().find(".panel-title-complete-repeat").text(obj[key][keyEl]);
+          $(l).parent().parent().find(".panel-title-complete-repeat").val(obj[key][keyEl]);
+          break;
+        case "silent":
+          $(l).parent().parent().find(".panel-title-complete-silent").val(obj[key][keyEl].toString()).change();
+          break;
+        case "timer":
+          $(l).parent().parent().find(".panel-title-complete-autoclose").val(obj[key][keyEl]);
+          break;
+        case "actions":
+          obj[key][keyEl].split("|").forEach(valCommand => {
+            var newElementCommand = $('#draggable').clone().removeAttr('id').uniqueId()
+            var extNumber = newElementCommand.attr('id');
+            newElementCommand.appendTo(l);
+            actions = valCommand.split("@");
+            doing = actions[0]+"@";
+            extDoing = actions[1];
+            switch (doing) {
+              case "URL@":
+                $("#"+extNumber+" #main_action").val(doing).change();
+                $("#"+extNumber+" #rawtext").val(extDoing);
+                break;
+              case "CLIP@":
+                $("#"+extNumber+" #main_action").val(doing).change();
+                $("#"+extNumber+" #rawtext").val(extDoing);
+                break;
+              case "GEN@":
+                $("#"+extNumber+" #main_action").val(doing).change();
+                $("#"+extNumber+" #sleep_counter").val(parseInt(extDoing));
+                break;
+              case "TARGET@":
+                $("#"+extNumber+" #main_action").val(doing).change();
+                $("#"+extNumber+" #rawtext").val(extDoing);
+                break;
+              case "CLICKTARGET@":
+                $("#"+extNumber+" #main_action").val(doing).change();
+                $("#"+extNumber+" #rawtext").val(extDoing);
+                break;
+              case "EXEC@":
+                $("#"+extNumber+" #main_action").val(doing).change();
+                $("#"+extNumber+" #rawtext").val(extDoing);
+                break;
+              case "EXECSTD@":
+                $("#"+extNumber+" #main_action").val(doing).change();
+                $("#"+extNumber+" #rawtext").val(extDoing);
+                break;
+              case "PRINT@":
+                $("#"+extNumber+" #main_action").val(doing).change();
+                $("#"+extNumber+" #rawtext").val(extDoing);
+                break;
+              case "PRESS@":
+                f1 = extDoing.split("+").slice(0,-1).join('+');
+                f2 = extDoing.split("+").slice(-1).join('+');
+                if (f1=="") {
+                  $("#"+extNumber+" #main_action").val("PRESS@"+f2).change();
+                } else {
+                  $("#"+extNumber+" #main_action").val("PRESS@"+f1).change();
+                  $("#"+extNumber+" #press_key").val("+"+f2).change();
+                }
+                break;
+              case "SLEEP@":
+                $("#"+extNumber+" #main_action").val(doing).change();
+                $("#"+extNumber+" #sleep_counter").val(parseInt(extDoing));
+                $("#"+extNumber+" #time_key").val(extDoing.replace(parseInt(extDoing).toString(),"")).change();
+                break;
+              case "FILE_READ_TO_CLIPBOARD@":
+                $("#"+extNumber+" #main_action").val(doing).change();
+                $("#"+extNumber+" #rawtext").val(extDoing);
+                break;
+              case "FILE_READ_LAST_LINE_TO_CLIPBOARD@":
+                $("#"+extNumber+" #main_action").val(doing).change();
+                $("#"+extNumber+" #rawtext").val(extDoing);
+                break;
+              default:
+            }
+          });
+          break;
+        default:
+      }
+    });
+  });
+});
+}
+
+var dragOption = {
+    connectToSortable: ".ui-sortable",
+    helper: "clone",
+    delay: 10,
+    distance: 5,
+    opacity: 0.45,
+    revert: "invalid",
+    revertDuration: 100,
+    start: function(event, ui) {
+      $(".ui-selected").each(function() {
+        $(this).data("original", $(this).position());
+      });
+    },
+    drag: function(event, ui) {
+      var offset = ui.position;
+      $(".ui-selected")
+        .not(this)
+        .each(function() {
+          var current = $(this).offset(),
+            targetLeft = document.elementFromPoint(
+              current.left - 1,
+              current.top
+            ),
+            targetRight = document.elementFromPoint(
+              current.left + $(this).width() + 1,
+              current.top
+            );
+          $(this)
+            .css({
+              position: "relative",
+              left: offset.left,
+              top: offset.top
+            })
+            .data("target", $.unique([targetLeft, targetRight]));
+        });
+    },
+    stop: function(event, ui) {
+      var ln=ui.helper.parent().find('#delete');
+      
+      if (ln.length>0) {
+        if (!ln.hasClass('hide')) {
+          ln.toggleClass('hide');
+        }
+      }
+      $(".ui-selected")
+        .not(this)
+        .each(function() {
+          var $target = $($(this).data("target")).filter(function(i, elm) {
+            return $(this).is(".slot") && !$(this).has(".item").length;
+          });
+          if ($target.length) {
+            $target.append(
+              $(this).css({
+                top: 0,
+                left: 0
+              })
+            );
+          } else {
+            $(this).animate({
+                top: 0,
+                left: 0
+              },
+              "slow"
+            );
+          }
+        });
+      $(".ui-selected")
+        .data("original", null)
+        .data("target", null)
+        .removeClass("ui-selected");
+    }
+  },
+  dropOption = {
+    accept: ".item",
+    activeClass: "green3",
+    drop: function(event, ui) {
+      if ($(this).is(".slot") && !$(this).has(".item").length) {
+        $(this).append(
+          ui.draggable.css({
+            top: 0,
+            left: 0
+          })
+        );
+      } else {
+        ui.draggable.animate({
+            top: 0,
+            left: 0
+          },
+          50
+        );
+      }
+    }
+  };
+$(function() {
+  $("#sortable").sortable({
+    revert: true
+  });
+  $("#draggable").draggable(dragOption);
+  $("ul, li").disableSelection();
+});
+
+$( function() {
+  $("#template").draggable();
+  $("#template #main_action").val("");
+} );
+
+setTimeout(() => { 
+      load(null);
+    }, 250)
+
+
+</script>
+
+</head>
+<body>
+<div id="template" class="panel panel-default slow">
+    <div class="panel-heading">
+      <h1 class="panel-title">📌 Drag Templates 📌</h1>
+    </div>
+    <div id="container1" class="panel-body box-container">
+      <div id="draggable" class="btn btn-default box-item">
+        <ul>
+          <li>
+            <div title="Can be moved. If you just want to add an empty task, select 'the hand' (default). Zero action list is not supported." onclick="showDeleteCommandButton(this);" class="mm_button">
+              <span></span>
+              <span></span>
+              <span></span></div>
+            <div onclick="deleteCommand(this);" class="hide m_button">
+              <span></span>
+              <span></span>
+              <span></span>
+            </div>
+            <select id="main_action" onchange="selection(this)" name="sym" class="btn btn-default box-in-item">
+              <option title="Dummy." value="">👆</option>
+              <option title="Focusing on the window by title. Not work, if protected window type" value="TARGET@">TARGET📌</option>
+              <option title="Focusing on the window by title. Click on the middle of screen for protected window" value="CLICKTARGET@">CLICK TARGET📌</option>
+              <option title="Run exec file and wait for std output." value="EXECSTD@">EXEC WAIT OUTPUT TO CLIP🗒️</option>
+              <option title="Run exec file and do not wait." value="EXEC@">EXEC🗒️</option>
+              <option title="Generate random string with length equal to field value. If less than '0' will be generated difficult password." value="GEN@">GEN♻️</option>
+              <option title="Copy text to clipboard" value="CLIP@">TEXT TO CLIPBOARD🖇️</option>
+              <option title="Open URL in default browser" value="URL@">OPEN URL🔖</option>
+              <option title="Select what to concatenate" value="PRESS@SUPER">SUPER➕</option>
+              <option title="Select what to concatenate" value="PRESS@CTRL">CTRL➕</option>
+              <option title="Select what to concatenate" value="PRESS@SHIFT">SHIFT➕</option>
+              <option title="Select what to concatenate" value="PRESS@ALT">ALT➕</option>
+              <option title="Select what to concatenate" value="PRESS@CTRL+SHIFT">CTRL➕SHIFT➕</option>
+              <option title="Select what to concatenate" value="PRESS@ALT+SHIFT">ALT➕SHIFT➕</option>
+              <option title="Select what to concatenate" value="PRESS@CTRL+ALT">CTRL➕ALT➕</option>
+              <option title="Select what to concatenate" value="PRESS@CTRL+ALT+SHIFT">CTRL➕ALT➕SHIFT➕</option>
+              <option title="Paste text at the current whatever place. Select Destination before that." value="PRINT@">PASTE🔠</option>
+              <option title="Sleep and wait" value="SLEEP@">SLEEP⌛</option>
+              <option title="Read file and write data to clipboard" value="FILE_READ_TO_CLIPBOARD@">FILE</option>
+              <option title="Read last line of the file and write data to clipboard" value="FILE_READ_LAST_LINE_TO_CLIPBOARD@">FILE LAST LINE</option>
+              <option value="PRESS@F1">F1</option>
+              <option value="PRESS@F2">F2</option>
+              <option value="PRESS@F3">F3</option>
+              <option value="PRESS@F4">F4</option>
+              <option value="PRESS@F5">F5</option>
+              <option value="PRESS@F6">F6</option>
+              <option value="PRESS@F7">F7</option>
+              <option value="PRESS@F8">F8</option>
+              <option value="PRESS@F9">F9</option>
+              <option value="PRESS@F10">F10</option>
+              <option value="PRESS@F11">F11</option>
+              <option value="PRESS@F12">F12</option>
+              <option value="PRESS@ESC">ESC</option>
+              <option value="PRESS@1">1</option>
+              <option value="PRESS@2">2</option>
+              <option value="PRESS@3">3</option>
+              <option value="PRESS@4">4</option>
+              <option value="PRESS@5">5</option>
+              <option value="PRESS@6">6</option>
+              <option value="PRESS@7">7</option>
+              <option value="PRESS@8">8</option>
+              <option value="PRESS@9">9</option>
+              <option value="PRESS@0">0</option>
+              <option value="PRESS@A">A</option>
+              <option value="PRESS@B">B</option>
+              <option value="PRESS@C">C</option>
+              <option value="PRESS@D">D</option>
+              <option value="PRESS@E">E</option>
+              <option value="PRESS@F">F</option>
+              <option value="PRESS@G">G</option>
+              <option value="PRESS@H">H</option>
+              <option value="PRESS@I">I</option>
+              <option value="PRESS@J">J</option>
+              <option value="PRESS@K">K</option>
+              <option value="PRESS@L">L</option>
+              <option value="PRESS@M">M</option>
+              <option value="PRESS@N">N</option>
+              <option value="PRESS@O">O</option>
+              <option value="PRESS@P">P</option>
+              <option value="PRESS@Q">Q</option>
+              <option value="PRESS@R">R</option>
+              <option value="PRESS@S">S</option>
+              <option value="PRESS@T">T</option>
+              <option value="PRESS@U">U</option>
+              <option value="PRESS@V">V</option>
+              <option value="PRESS@W">W</option>
+              <option value="PRESS@X">X</option>
+              <option value="PRESS@Y">Y</option>
+              <option value="PRESS@Z">Z</option>
+              <option value="PRESS@NUMLOCK">NUMLOCK</option>
+              <option value="PRESS@SCROLLLOCK">SCROLLLOCK</option>
+              <option value="PRESS@CAPSLOCK">CAPSLOCK</option>
+              <option value="PRESS@MINUS">➖</option>
+              <option value="PRESS@PLUS">➕</option>
+              <option value="PRESS@EQUAL">🟰</option>
+              <option value="PRESS@BACKSPACE">BACKSPACE</option>
+              <option value="PRESS@TAB">TAB</option>
+              <option value="PRESS@LEFTBRACE">LEFTBRACE({)</option>
+              <option value="PRESS@RIGHTBRACE">RIGHTBRACE(})</option>
+              <option value="PRESS@ENTER">ENTER</option>
+              <option value="PRESS@SEMICOLON">SEMICOLON(;)</option>
+              <option value="PRESS@APOSTROPHE">APOSTROPHE(')</option>
+              <option value="PRESS@GRAVE">GRAVE(~)</option>
+              <option value="PRESS@BACKSLASH">BACKSLASH(\)</option>
+              <option value="PRESS@COMMA">COMMA(,)</option>
+              <option value="PRESS@DOT">DOT(.)</option>
+              <option value="PRESS@SLASH">SLASH(/)</option>
+              <option value="PRESS@ASTERISK">ASTERISK(*)</option>
+              <option value="PRESS@SPACE">SPACE</option>
+              <option value="PRESS@PAGEUP">PAGEUP</option>
+              <option value="PRESS@PAGEDOWN">PAGEDOWN</option>
+              <option value="PRESS@END">END</option>
+              <option value="PRESS@HOME">HOME</option>
+              <option value="PRESS@LEFT">LEFT(⬅️)</option>
+              <option value="PRESS@UP">UP(⬆️)</option>
+              <option value="PRESS@RIGHT">RIGHT(➡️)</option>
+              <option value="PRESS@DOWN">DOWN(⬇️)</option>
+              <option value="PRESS@PRINT">PRINT</option>
+              <option value="PRESS@INSERT">INSERT</option>
+              <option value="PRESS@DELETE">DELETE</option>
+            </select>
+            <label>
+              <textarea id="rawtext" name="text" rows="1" wrap="hard" maxlength="3000" class="hide"></textarea>
+              <input id="sleep_counter" class="hide btn btn-default box-in-item" type="number" placeholder="second" min="1" max="1000" style="max-width: 85px;" value="1">
+              <select id="press_key" name="sym" class="hide btn btn-default box-in-item">
+                <option value="">👆</option>
+                <option value="+F1">F1</option>
+                <option value="+F2">F2</option>
+                <option value="+F3">F3</option>
+                <option value="+F4">F4</option>
+                <option value="+F5">F5</option>
+                <option value="+F6">F6</option>
+                <option value="+F7">F7</option>
+                <option value="+F8">F8</option>
+                <option value="+F9">F9</option>
+                <option value="+F10">F10</option>
+                <option value="+F11">F11</option>
+                <option value="+F12">F12</option>
+                <option value="+ESC">ESC</option>
+                <option value="+1">1</option>
+                <option value="+2">2</option>
+                <option value="+3">3</option>
+                <option value="+4">4</option>
+                <option value="+5">5</option>
+                <option value="+6">6</option>
+                <option value="+7">7</option>
+                <option value="+8">8</option>
+                <option value="+9">9</option>
+                <option value="+0">0</option>
+                <option value="+A">A</option>
+                <option value="+B">B</option>
+                <option value="+C">C</option>
+                <option value="+D">D</option>
+                <option value="+E">E</option>
+                <option value="+F">F</option>
+                <option value="+G">G</option>
+                <option value="+H">H</option>
+                <option value="+I">I</option>
+                <option value="+J">J</option>
+                <option value="+K">K</option>
+                <option value="+L">L</option>
+                <option value="+M">M</option>
+                <option value="+N">N</option>
+                <option value="+O">O</option>
+                <option value="+P">P</option>
+                <option value="+Q">Q</option>
+                <option value="+R">R</option>
+                <option value="+S">S</option>
+                <option value="+T">T</option>
+                <option value="+U">U</option>
+                <option value="+V">V</option>
+                <option value="+W">W</option>
+                <option value="+X">X</option>
+                <option value="+Y">Y</option>
+                <option value="+Z">Z</option>
+                <option value="+NUMLOCK">NUMLOCK</option>
+                <option value="+SCROLLLOCK">SCROLLLOCK</option>
+                <option value="+CAPSLOCK">CAPSLOCK</option>
+                <option value="+MINUS">➖</option>
+                <option value="+PLUS">➕</option>
+                <option value="+EQUAL">🟰</option>
+                <option value="+BACKSPACE">BACKSPACE</option>
+                <option value="+TAB">TAB</option>
+                <option value="+LEFTBRACE">LEFTBRACE({)</option>
+                <option value="+RIGHTBRACE">RIGHTBRACE(})</option>
+                <option value="+ENTER">ENTER</option>
+                <option value="+SEMICOLON">SEMICOLON(;)</option>
+                <option value="+APOSTROPHE">APOSTROPHE(')</option>
+                <option value="+GRAVE">GRAVE(~)</option>
+                <option value="+BACKSLASH">BACKSLASH(\)</option>
+                <option value="+COMMA">COMMA(,)</option>
+                <option value="+DOT">DOT(.)</option>
+                <option value="+SLASH">SLASH(/)</option>
+                <option value="+ASTERISK">ASTERISK(*)</option>
+                <option value="+SPACE">SPACE</option>
+                <option value="+PAGEUP">PAGEUP</option>
+                <option value="+PAGEDOWN">PAGEDOWN</option>
+                <option value="+END">END</option>
+                <option value="+HOME">HOME</option>
+                <option value="+LEFT">LEFT(⬅️)</option>
+                <option value="+UP">UP(⬆️)</option>
+                <option value="+RIGHT">RIGHT(➡️)</option>
+                <option value="+DOWN">DOWN(⬇️)</option>
+                <option value="+PRINT">PRINT</option>
+                <option value="+INSERT">INSERT</option>
+                <option value="+DELETE">DELETE</option>
+              </select>
+              <select id="time_key" name="sym" style="max-width: 85px;" class="hide btn btn-default box-in-item">
+                <option value="s" selected="selected">sec</option>
+                <option value="ms">msec</option>
+                <option value="m">min</option>
+                <option value="h">hour</option>
+              </select>
+            </label>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+<div class="buttons">
+<button onclick="add(this);" class="btn-hover color-7">ADD NEW</button>
+<button onclick="save(this);" class="btn-hover color-4">SAVE</button>
+<button onclick="load(this);" class="btn-hover color-2">LOAD</button>
+</div>
+<cs-app>
+  <cs-title>
+  </cs-title>
+  <cs-tiles>
+  </cs-tiles>
+</cs-app>
+  
+</body>
+</html>
