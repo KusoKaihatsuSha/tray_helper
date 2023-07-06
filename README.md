@@ -1,58 +1,71 @@
 [![godoc](https://godoc.org/github.com/KusoKaihatsuSha/tray_helper?status.svg)](https://godoc.org/github.com/KusoKaihatsuSha/tray_helper) [![Go Report Card](https://goreportcard.com/badge/github.com/KusoKaihatsuSha/tray_helper)](https://goreportcard.com/report/github.com/KusoKaihatsuSha/tray_helper) [![go test](https://github.com/KusoKaihatsuSha/tray_helper/actions/workflows/test.yml/badge.svg)](https://github.com/KusoKaihatsuSha/tray_helper/actions/workflows/test.yml)
 
-# Tray helper*
 
-> App to help with daily routine.
+# Tray helper
 
-`* The application uses a configuration file, which could be created on pressing the 'Settings' button in the GUI popup, or you can create this file manually, for example by looking inside the folder **__build** after execute **go generate windows_build.go**.`
+Windows application to help with daily routine. 
 
-### **Available actions**
+When routine activities need to be run frequently, automation saves time.
 
-`TARGET📌`
-Focusing on the window by title. Click on the middle of screen for protected window
+You can compose simple chains of "actions" and execute them by clicking in the tray menu.
 
-`CLICK TARGET📌`
-Run exec file and wait for std output.
+For example:
 
-`EXEC WAIT OUTPUT TO CLIP🗒️`
-Run exec file and wait for std output.
+✔️ Copying some key from a file to the clipboard to avoid showing the location and the file itself to colleagues when presenting. 
 
-`EXEC🗒️`
-Run exec file and do not wait.
+✔️ Launching an application and pasting a "login" into it, if it's not saved automatically and getting tired of doing it by hand.
 
-`GEN♻️`
-Generate random string with length equal to field value. If less than '0' will be generated difficult password.
+✔️ Open all personal/work sites in one click on the work computer so that nothing is stored in history.
 
-`TEXT TO CLIPBOARD🖇️`
-Copy text to clipboard
+✔️ Automatically switch the focus to the right window after copying the desired file and then automatically paste. This comes in handy for simple automation.
 
-`OPEN URL🔖`
-Open URL in default browser
 
-`SUPER➕,CTRL➕,SHIFT➕,ALT➕,CTRL➕SHIFT➕,ALT➕SHIFT➕,CTRL➕ALT➕,CTRL➕ALT➕SHIFT➕`
-Additional keys
+### **Сapability**
 
-`PASTE🔠`
-Paste text at the current whatever place. Select Destination before that.
+1) Simple chains of "actions"
+Looks like 
+> URL@https://go.dev/play/|URL@https://google.com|EXECSTD@ping -n 10 google.com
 
-`SLEEP⌛`
-Sleep and wait
+2) Set a timer, when it expires all "self-starting" (if app starts without cmd \k as an example) non OS-protected process will be killed.
 
-`FILE`
-Read file and write data to clipboard
+3) Repeat chains of "actions".
 
-`FILE LAST LINE`
-Read last line of the file and write data to clipboard
+4) Send notification when complete and timer ends
 
-### **Available flags**
 
-> Run with custom settings file
+### **Actions**
 
-`-config=filename.data` or `-c=filename.data`  
+`TARGET📌` - Focusing on the window by title. Click on the middle of screen for protected window
 
-> Address of settings
+`CLICK TARGET📌` - Run exec file and wait for std output.
 
-`-a=localhost:8080`
+`EXEC WAIT OUTPUT TO CLIP🗒️` - Run exec file and wait for std output.
+
+`EXEC🗒️` - Run exec file and do not wait.
+
+`GEN♻️` - Generate random string with length equal to field value. If less than '0' will be generated difficult password.
+
+`TEXT TO CLIPBOARD🖇️` - Copy text to clipboard
+
+`OPEN URL🔖` - Open URL in default browser
+
+`SUPER➕,CTRL➕,SHIFT➕,ALT➕,CTRL➕SHIFT➕,ALT➕SHIFT➕,CTRL➕ALT➕,CTRL➕ALT➕SHIFT➕` - Additional keys
+
+`PASTE🔠` - Paste text at the current whatever place. Select Destination before that.
+
+`SLEEP⌛` - Sleep and wait
+
+`FILE` - Read file and write data to clipboard
+
+`FILE LAST LINE` - Read last line of the file and write data to clipboard
+
+
+### **Available flags on start binary**
+
+`-config=filename.data` or `-c=filename.data` - Run with custom settings file
+
+`-a=localhost:8080` - Address of web settings
+
 
 ### **Build**
 
@@ -61,6 +74,7 @@ Read last line of the file and write data to clipboard
 OR
 
 `go generate windows_build.go`
+
 
 ### Example **settings.data:**
 
@@ -84,8 +98,14 @@ OR
 
 Screenshots of settings:
 
-<div style="width:50%">
+<div style="width:40%">
+<label>In tray:</label><br>
 <img src="/files/settings-0.png" ><br>
+<label>Tasks:</label><br>
 <img src="/files/settings-list.png" ><br>
+<label>Chains of "actions:"</label><br>
 <img src="/files/settings.png" ><br>
 </div>
+
+
+`* The application uses a configuration file, which could be created on pressing the 'Settings' button in the GUI popup, or you can create this file manually (by looking example).`

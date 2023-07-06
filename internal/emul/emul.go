@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"os"
 	"os/exec"
+	"regexp"
 	"strconv"
 	"strings"
 	"time"
@@ -46,15 +47,25 @@ func ParseCommands(cmd string) []Command {
 }
 
 // ParseCommand parse one command into struct
-func ParseCommand(cmd string, s rune) []string {
+func ParseCommand(cmd string, s ...rune) []string {
 	return strings.FieldsFunc(cmd, func(r rune) bool {
-		switch r {
-		case s:
-			return true
-		default:
-			return false
+		for _, v := range s {
+			if r == v {
+				return true
+			}
 		}
+		return false
 	})
+}
+
+func ParseCommandCmd(cmd string) []string {
+	re := regexp.MustCompile(`"[^"]+"|\S+`)
+	c := re.FindAllString(cmd, -1)
+
+	for k, val := range c {
+		c[k] = strings.Trim(val, `"`)
+	}
+	return c
 }
 
 // parsePress - emulating press button
@@ -224,12 +235,9 @@ func parseExecOutput(ctx context.Context, cmd string) (string, bool) {
 		return fmt.Sprintf("warning: %v", "skip because empty"), true
 	}
 
-	c := strings.SplitN(cmd, " ", 2)
-	cargs := []string{}
-	if len(c) > 1 {
-		cargs = strings.Split(c[1], " ")
-	}
-	cmdCtx := exec.CommandContext(ctx, c[0], cargs...)
+	c := ParseCommandCmd(cmd)
+
+	cmdCtx := exec.CommandContext(ctx, c[0], c[1:]...)
 	if out, err := cmdCtx.CombinedOutput(); err == nil {
 		t := time.Now().Add(10 * time.Second)
 		for cmdCtx.Process == nil && time.Since(t) <= 0 {
@@ -259,12 +267,9 @@ func parseExec(ctx context.Context, cmd string) (string, bool) {
 		return fmt.Sprintf("warning: %v", "skip because empty"), true
 	}
 
-	c := strings.SplitN(cmd, " ", 2)
-	cargs := []string{}
-	if len(c) > 1 {
-		cargs = strings.Split(c[1], " ")
-	}
-	if cmd := exec.CommandContext(ctx, c[0], cargs...); cmd.Start() == nil {
+	c := ParseCommandCmd(cmd)
+
+	if cmd := exec.CommandContext(ctx, c[0], c[1:]...); cmd.Start() == nil {
 		t := time.Now().Add(10 * time.Second)
 		for cmd.Process == nil && time.Since(t) <= 0 {
 			<-time.After(100 * time.Millisecond)
